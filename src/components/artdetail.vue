@@ -1,46 +1,58 @@
 <template>
   <div id="detail">
       <router-view>
-        <h2></h2>
-        <p></p>
       </router-view>
-      <h2>{{artid}}</h2>
-      <button @click="gettest">点击</button>
+      <h2>{{articledetail[0]}}</h2>
+      <p>{{articledetail[1]}}</p>
+      <br>
+      <span>{{articledetail[2]}}</span>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
 data(){
     return{
         articledetail: null,
-
     }
 },
- props: ['artid'],
- methods:{
-        // 点击文章标题index组件获取到了文章的detail内容，需要把这些信息传给articledetail组件（应该可以构建一个父子组件吧）
-        getArticleContent:function(id){
-            axios({
-                url:'http://localhost:8081/blog/'+id,
-                method: 'get',
-                data: {},
-                headers:{ token:'',client:'' }
-                }).then(res =>{
-                    this.articledetail = res.data.data
-                    console.log(res.data.data) 
+created(){
+    axios({
+        url:'http://localhost:8081/blog/'+this.$route.params.id,
+        method: 'get',
+        data: {},
+        headers:{ token:'',client:'' }
+        }).then(res =>{
+            this.articledetail = res.data.data
+            console.log(res.data.data) 
         },function(error){
             console.log(error.res)
             }) 
         },
-        
-        gettest:function(){
-            console.log(this.id)
-        }
-    }
 }
 </script>
 
 <style>
-
+    #detail > h2{
+        text-align: center;
+    }
+    #detail > p{
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        text-align: left;
+        text-decoration: none;
+        border-bottom: none;
+        font-weight: normal;
+        font-style: normal;
+        border: none;
+        color: #111;
+        font-size: 1.6em;
+        line-height: 150%;   
+    }
+    #detail{
+        margin-left: 20%;
+        width: 50%;
+    }
 </style>

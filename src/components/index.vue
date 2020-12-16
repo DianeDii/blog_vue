@@ -2,23 +2,19 @@
   <div id="index" >
     <h3>最近文章</h3>
     <ul id="list">
-        <router-link to="/blog/detail">
+        <router-link :to="'/blog/'+artid">
         <li v-for='(item,index) in articleData' @click="getArticleId(item)" >
                 {{index}}
         </li>
         </router-link>
     </ul>
-    <artdetail v-bind:artid="this.artid"></artdetail>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Artdetail from './artdetail.vue'
 export default {
-    components:{
-        Artdetail
-    },
+ 
     data() {
         return {
             artid: 0,
@@ -40,7 +36,7 @@ export default {
         getArticleId:function(articleid){
             this.$data.artid = articleid
             console.log(this.artid)
-        }
+        } 
    }
     
 }
