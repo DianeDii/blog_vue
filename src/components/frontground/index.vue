@@ -52,9 +52,9 @@ export default {
         width: 300px;
     }
     li{
-        position: relative;
-        float: left;
-        margin-left: 40px;
-        height: 50px;
+        position: static;
+        margin-left: 40%;
+        height: 30px;
+        text-align: left;;
     }
 </style>

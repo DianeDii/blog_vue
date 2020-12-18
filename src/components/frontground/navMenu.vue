@@ -8,6 +8,7 @@
         <el-menu-item index="4"><router-link to="/labor">实验室</router-link></el-menu-item>
         <el-menu-item index="5"><router-link to="/about">关于我</router-link></el-menu-item>
     </el-menu>
+    
 <div class="line"></div>
   </div>
 </template>
@@ -33,4 +34,5 @@
         width: 50%;
         margin-right: 20%;
     }
+
 </style>

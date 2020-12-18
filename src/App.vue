@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <el-container>
-        <el-header><navMenu></navMenu></el-header>
+        <el-header><navMenu></navMenu><span id="loginbtn" v-show="isshow"><router-link to="/login" @click="tohide()">登录</router-link></span></el-header>
         <el-main><router-view></router-view></el-main>
         <el-footer>form dianedii</el-footer>
       </el-container>
@@ -10,12 +10,22 @@
 
 <script>
 
-import navMenu from './components/navMenu.vue'
+import navMenu from './components/frontground/navMenu.vue'
 
 
 export default {
   components: {navMenu},
-  name: 'App'
+  name: 'App',
+  data(){
+    return{
+      isshow: true 
+    }
+  },
+  methods: {
+    tohide(){
+      this.isshow =false
+    }
+  }
 }
 </script>
 
@@ -62,5 +72,9 @@ html,body,#app,.el-container{
         /*统一设置高度为100%*/
         height: 100%;
     }
+    #loginbtn{
+    position: relative;
+    float: right;
+  }
 
 </style>
