@@ -26,11 +26,11 @@
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
         <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -51,6 +51,31 @@
 import axios from 'axios'
   export default {
     methods: {
+      handleEdit(index, row) {
+          this.$router.push({
+          path:'/editblog',
+          query:{
+            isnew: false,
+            id: row.id
+          }
+        })
+        console.log(index, row.id,row.title);
+      },
+      handleDelete(index, row) {
+         axios({
+              url:'http://localhost:8081/blog/del',
+              method: 'delete',
+              data: {
+                artID: row.id
+              },
+              headers:{ token:'',client:'' }
+              }).then(res =>{
+                console.log("删除成功")                
+              },function(error){
+                  console.log(error.res)
+              }) 
+        console.log(index, row);
+      },
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 2) {
           return 'warning-row';
@@ -74,7 +99,12 @@ import axios from 'axios'
       return jslength
       },
       newblog(){
-        this.$router.replace('/editblog')
+        this.$router.push({
+          path:'/editblog',
+          query:{
+            isnew: true
+          }
+        })
       }
     },
     data() {
