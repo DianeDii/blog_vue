@@ -8,6 +8,8 @@ import index from '@/components/frontground/index.vue'
 import detail from '@/components/frontground/artdetail.vue'
 import login from '@/components/frontground/login.vue'
 import backindex from '@/components/background/b_index.vue'
+import datalist from '@/components/background/datalist.vue'
+import editblog from '@/components/background/edit.vue'
 
 
 Vue.use(Router)
@@ -53,6 +55,16 @@ export default new Router({
       path: '/backindex',
       name: 'backindex',
       component: backindex
+    },
+    {
+      path: '/datalist',
+      name: 'datalist',
+      component: datalist
+    },
+    {
+      path: '/editblog',
+      name: 'editblog',
+      component: editblog
     },
   ]
 })

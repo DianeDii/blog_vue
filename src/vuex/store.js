@@ -4,32 +4,19 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-    navmenu: '1'
+    navid: 1
 }
 
-
-const getters = {
-    getnavmenu(state){
-        return state.navmenu
-    }
-}
-
-
+/**
+ * mutations 里面放置的是我们操作state对象属性的方法
+ */
 const mutations = {
-    getnavmenu(state,name){
-        return state.navmenu = name
-    }
+    getnavdata(state,id) {
+        return (state.navid = id)
+    },
 }
 
-
-const actions = {
-    
-}
-
-const store = new Vuex.Store({
+export default new Vuex.Store({
     state,
-    getters,
-    mutations,
-    actions
+    mutations
 })
-export default store

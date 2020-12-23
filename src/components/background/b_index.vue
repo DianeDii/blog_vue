@@ -2,7 +2,8 @@
   <div id="bindex">
       <tree></tree>
       <div id="mainarea">
-          <datalist></datalist>
+          <Datalist></Datalist>
+          <!-- <h1>{{ $store.state.navid }}</h1> -->
       </div>
   </div>
 </template>
@@ -27,6 +28,10 @@ export default {
 </script>
 
 <style>
+tree{
+        position: relative;
+        float: left;
+}
 #mainarea{
         position: relative;
         float: left;
