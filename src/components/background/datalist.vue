@@ -62,15 +62,18 @@ import axios from 'axios'
         console.log(index, row.id,row.title);
       },
       handleDelete(index, row) {
+
+        let params= new URLSearchParams()
+        params.append('artID',row.id)
+
          axios({
               url:'http://localhost:8081/blog/del',
               method: 'delete',
-              data: {
-                artID: row.id
-              },
+              data: params,
               headers:{ token:'',client:'' }
               }).then(res =>{
-                console.log("删除成功")                
+                console.log("删除成功")
+                window.location.reload()           
               },function(error){
                   console.log(error.res)
               }) 
