@@ -10,11 +10,11 @@ import login from '@/components/frontground/login.vue'
 import backindex from '@/components/background/b_index.vue'
 import datalist from '@/components/background/datalist.vue'
 import editblog from '@/components/background/edit.vue'
-
+import cookie from '../utils/cookie'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/index',
@@ -54,17 +54,48 @@ export default new Router({
     {
       path: '/backindex',
       name: 'backindex',
-      component: backindex
+      component: backindex,
+      meta: {
+        requestAuth: true
+      }
     },
     {
       path: '/datalist',
       name: 'datalist',
-      component: datalist
+      component: datalist,
+      meta: {
+        requestAuth: true
+      }
     },
     {
       path: '/editblog',
       name: 'editblog',
-      component: editblog
+      component: editblog,
+      meta: {
+        requestAuth: true
+      }
     },
   ]
 })
+
+/*
+* beforeEach:从一个页面跳转到另外一个页面时触发
+* to:要跳转的页面
+* from:从哪个页面出来
+* next:决定是否通过
+*/
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(res => res.meta.requestAuth)){
+      if(cookie.getCookie("value")){
+        next()
+      }else{
+        next({
+          path: '/login',
+          query: {redirect: to.fullPath}
+        })
+      }
+  }else{
+    next()
+  }
+  })
+  export default router

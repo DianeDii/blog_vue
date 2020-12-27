@@ -1,9 +1,9 @@
 <template>
   <div id="app">
       <el-container>
-        <el-header><navMenu></navMenu><span id="loginbtn" v-show="isshow"><router-link to="/login" @click="tohide()">登录</router-link></span></el-header>
+        <el-header><navMenu></navMenu></el-header>
         <el-main><router-view></router-view></el-main>
-        <el-footer>form dianedii</el-footer>
+        <el-footer> <el-link type="info" @click="tologin" v-show="isshow">from dianedii</el-link></el-footer>
       </el-container>
   </div>
 </template>
@@ -22,8 +22,11 @@ export default {
     }
   },
   methods: {
-    tohide(){
-      this.isshow =false
+    tologin(){
+        this.$router.push({
+          path:'/login'
+        })
+      this.isshow = false
     }
   }
 }

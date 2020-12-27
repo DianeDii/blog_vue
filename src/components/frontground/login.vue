@@ -2,7 +2,7 @@
   <div id="login">
 <el-form ref="form" :model="form" label-width="80px">
   <el-form-item label="用户名">
-    <el-input v-model="form.name"></el-input>
+    <el-input v-model="form.username"></el-input>
   </el-form-item>
   <el-form-item label="密码">
     <el-input v-model="form.pwd" type="password"></el-input>
@@ -18,11 +18,13 @@
 </template>
 
 <script>
+import axios from 'axios'
+import cookie from '../../utils/cookie'
 export default {
 data() {
       return {
         form: {
-          name: '',
+          username: '',
           pwd: '',
         },
         iscurrent: false
@@ -30,15 +32,30 @@ data() {
     },
     methods: {
       onSubmit() {
-        if(this.form.name == "diane" && this.form.pwd == "diane"){
-          window.location.href = "#/backindex";
-          console.log('submit!');
-        }else{
-            window.alert("用户名/密码输入有误！")
-        }
-      },
-
-    }
+        // let params= new URLSearchParams()
+        // params.append('username',this.form.username)
+        // params.append('pwd',this.form.pwd)
+        axios({
+          url:'http://localhost:8081/user/login',
+          method: 'post',
+          data: this.form,
+          headers:{token:'',client:''}
+        }).then(res =>{
+          if(res.data.data === null){
+            window.alert("用户名或密码错误！")
+            console.log("用户名或密码错误！")
+          }else{
+          console.log("登录成功")
+          cookie.setCookie(res.data.data,1)
+          console.log(res)
+          window.location.href = "#/backindex"; 
+          }
+          
+        },function(error){
+          console.log(error.res)
+        })
+    },
+  }
 }
 </script>
 
