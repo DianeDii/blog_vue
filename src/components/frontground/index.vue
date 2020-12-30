@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
  
     data() {
@@ -23,7 +22,7 @@ export default {
     },
     created(){
         
-        axios.get("http://localhost:8081/blog/list").then
+        this.axios.get("/blog/list").then
             ((response) => {
                 this.articleData = response.data.data
                 console.log(this.articleData)

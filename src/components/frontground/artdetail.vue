@@ -1,16 +1,15 @@
 <template>
   <div id="detail">
       <router-view>
-      </router-view>
-      <h2>{{articledetail[0]}}</h2>
-      <p>{{articledetail[1]}}</p>
+      </router-view> 
+      <h2 v-if="articledetail != null">{{articledetail[0]}}</h2>
+      <p v-if="articledetail != null">{{articledetail[1]}}</p>
       <br>
-      <span>{{articledetail[2]}}</span>
+      <span v-if="articledetail != null">{{articledetail[2]}}</span>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
 data(){
     return{
@@ -18,14 +17,13 @@ data(){
     }
 },
 created(){
-    axios({
-        url:'http://localhost:8081/blog/'+this.$route.params.id,
+    this.axios({
+        url:'/blog/'+this.$route.params.id,
         method: 'get',
         data: {},
         headers:{ token:'',client:'' }
         }).then(res =>{
-            this.articledetail = res.data.data
-            console.log(res.data.data) 
+            this.articledetail = res.data.data   
         },function(error){
             console.log(error.res)
             }) 

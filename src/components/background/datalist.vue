@@ -36,7 +36,6 @@
   </el-table>
   </div>
 </template>
-
 <style>
   .el-table .warning-row {
     background: oldlace;
@@ -48,7 +47,6 @@
 </style>
 
 <script>
-import axios from 'axios'
   export default {
     methods: {
       handleEdit(index, row) {
@@ -66,8 +64,8 @@ import axios from 'axios'
         let params= new URLSearchParams()
         params.append('artID',row.id)
 
-         axios({
-              url:'http://localhost:8081/blog/del',
+         this.axios({
+              url:'/blog/del',
               method: 'delete',
               data: params,
               headers:{ token:'',client:'' }
@@ -108,14 +106,16 @@ import axios from 'axios'
             isnew: true
           }
         })
-      }
+      },
+
     },
     data() {
       return {
         // search: String,
         nav: 1,
         isRouterAlive: true,
-        tableData: []
+        tableData: [],
+        search: ''
       }
     },
     watch:{
@@ -128,8 +128,8 @@ import axios from 'axios'
           // window.location.reload()
           if (this.nav === 1) {
         // 初始化文章list
-            axios({
-              url:'http://localhost:8081/blog/list',
+            this.axios({
+              url:'/blog/list',
               method: 'get',
               data: {},
               headers:{ token:'',client:'' }
@@ -148,8 +148,8 @@ import axios from 'axios'
               }) 
           }else if(this.nav === 2){
         // 初始化分类list
-            axios({
-              url:'http://localhost:8081/sort/list',
+            this.axios({
+              url:'/sort/list',
               method: 'get',
               data: {},
               headers:{ token:'',client:'' }

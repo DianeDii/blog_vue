@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
  
     data() {
@@ -22,8 +21,8 @@ export default {
         }
     },
     created(){
-      axios({
-        url:'http://localhost:8081/blog/listbysort/1',
+      this.axios({
+        url:'/blog/listbysort/1',
         method: 'GET',
         data: {},
         headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf-8' }

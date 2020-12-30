@@ -18,7 +18,7 @@
 
 <script>
 // 这里isnew === true 判断有问题
-import axios from 'axios';
+
 import E from "wangeditor";
 
 export default {
@@ -47,8 +47,8 @@ export default {
             if(this.isnew === "true"){
                 this.buildarticle.content = this.edit.txt.text()
                 // 新建文章
-                axios({
-                    url:'http://localhost:8081/blog/init',
+                this.axios({
+                    url:'/blog/init',
                     method: 'post',
                     data: this.buildarticle,
                     headers:{ token:'',client:'' }
@@ -61,8 +61,8 @@ export default {
                 // 更新文章
                 this.buildarticle.content = this.edit.txt.text()
                 this.buildarticle.artid = this.$route.query.id
-                axios({
-                    url:'http://localhost:8081/blog/update',
+                this.axios({
+                    url:'/blog/update',
                     method: 'post',
                     data: this.buildarticle,
                     headers:{ token:'',client:'' }
@@ -95,13 +95,13 @@ export default {
             this.articledetail.summary = null
             this.articledetail.content = null
         }else{
-            axios({
-                url:'http://localhost:8081/blog/'+this.$route.query.id,
+            this.axios({
+                url:'/blog/'+this.$route.query.id,
                 method: 'get',
                 data: {},
                 headers:{ token:'',client:'' }
                 }).then(res =>{
-                    var row = {}
+                    
                     this.inputtitle = res.data.data[0]                    
                     editor.txt.append(res.data.data[1])
                  },function(error){

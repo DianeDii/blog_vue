@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import cookie from '../../utils/cookie'
 export default {
 data() {
@@ -35,8 +34,8 @@ data() {
         // let params= new URLSearchParams()
         // params.append('username',this.form.username)
         // params.append('pwd',this.form.pwd)
-        axios({
-          url:'http://localhost:8081/user/login',
+        this.axios({
+          url:'/user/login',
           method: 'post',
           data: this.form,
           headers:{token:'',client:''}
