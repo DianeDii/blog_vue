@@ -10,7 +10,7 @@
       <div id="sort">
           <el-button id="btn" type="primary" @click="submit">提交</el-button>
           <el-button type="primary" @click="reset">放弃</el-button>
-          <el-button type="primary" @click="out">自定义调试</el-button>
+          <!-- <el-button type="primary" @click="out">自定义调试</el-button> -->
           <span id="switch">生活随笔:</span>
           <el-switch
             v-model="islife"
@@ -61,11 +61,7 @@ export default {
         }
     },
     methods:{
-        out(){
-
-
-        
-        },
+        // out(){},
         async submit(){
             if (this.islife === false && this.sortchoose == '') {
                 window.alert("你还未选择分类！");
@@ -82,7 +78,7 @@ export default {
             
 
             if(this.isnew === "true"){
-                this.buildarticle.content = this.edit.txt.text()
+                this.buildarticle.content = this.edit.txt.html()
                 // 新建文章
                 await this.axios({
                     url:'/blog/init',
@@ -116,7 +112,7 @@ export default {
                     })   
             }else{
                 // 更新文章
-                this.buildarticle.content = this.edit.txt.text()
+                this.buildarticle.content = this.edit.txt.html()
                 this.buildarticle.artid = this.$route.query.id
                 this.axios({
                     url:'/blog/update',
@@ -223,5 +219,52 @@ export default {
   }
 #switch{
     margin-left: 100px;
+}
+
+/* wangEditor样式 */
+/* table 样式 */
+table {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+table td,
+table th {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 3px 5px;
+}
+table th {
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+}
+
+/* blockquote 样式 */
+blockquote {
+  display: block;
+  border-left: 8px solid #d0e5f2;
+  padding: 5px 10px;
+  margin: 10px 0;
+  line-height: 1.4;
+  font-size: 100%;
+  background-color: #f1f1f1;
+}
+
+/* code 样式 */
+code {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  padding: 3px 5px;
+  margin: 0 3px;
+}
+pre code {
+  display: block;
+}
+
+/* ul ol 样式 */
+ul, ol {
+  margin: 10px 0 10px 20px;
 }
 </style>
