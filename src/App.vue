@@ -33,6 +33,10 @@ export default {
 </script>
 
 <style>
+@import './common/font/font.css';
+  body{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
   .el-header, .el-footer {
     background-color: #409EFF;
     color: #333;

@@ -11,11 +11,17 @@ import backindex from '@/components/background/b_index.vue'
 import datalist from '@/components/background/datalist.vue'
 import editblog from '@/components/background/edit.vue'
 import cookie from '../utils/cookie'
+import searchlist from '@/components/frontground/searchlist.vue'
 
 Vue.use(Router)
 
 const router = new Router({
+  
   routes: [
+    { 
+      path: '/', 
+      redirect: '/index' 
+    },
     {
       path: '/index',
       name: 'index',
@@ -56,7 +62,7 @@ const router = new Router({
       name: 'backindex',
       component: backindex,
       meta: {
-        requestAuth: true
+        requestAuth: true  //请求认证，路由守卫
       }
     },
     {
@@ -72,8 +78,13 @@ const router = new Router({
       name: 'editblog',
       component: editblog,
       meta: {
-        requestAuth: true
+        requestAuth: true 
       }
+    },
+    {
+      path: '/searchlist',
+      name: 'searchlist',
+      component: searchlist
     },
   ]
 })

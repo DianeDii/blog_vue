@@ -1,10 +1,10 @@
 <template>
   <div id="life">
-    <h3>随笔</h3>
+    <h3>随笔</h3><br>
     <ul id="list">
         <router-link :to="'/blog/'+artid">
         <li v-for='(item,index) in articleData' @click="getArticleId(item)" >
-                {{index}}
+                <a href="#"><span>{{index}}</span></a>
         </li>
         </router-link>
     </ul>
@@ -59,5 +59,8 @@ export default {
         margin-left: 40%;
         height: 30px;
         text-align: left;;
+    }
+    a:link{
+        color: #567;
     }
 </style>

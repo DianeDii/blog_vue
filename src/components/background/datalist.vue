@@ -50,6 +50,7 @@
   export default {
     methods: {
       handleEdit(index, row) {
+        if(this.nav === 1){
           this.$router.push({
           path:'/editblog',
           query:{
@@ -58,9 +59,16 @@
           }
         })
         console.log(index, row.id,row.title);
+        }else{
+          // 出一个弹框：https://element.eleme.cn/#/zh-CN/component/message-box
+          // 获取改完后的数据再axios传后面
+          // 刷新组件
+          // 同理还有删除
+        }
+
       },
       handleDelete(index, row) {
-
+        if(this.nav === 1){
         let params= new URLSearchParams()
         params.append('artID',row.id)
 
@@ -76,6 +84,10 @@
                   console.log(error.res)
               }) 
         console.log(index, row);
+        }else{
+          // 删除sort
+          this.axios.delete('/')
+        }
       },
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 2) {
@@ -135,12 +147,12 @@
               headers:{ token:'',client:'' }
               }).then(res =>{
                 
-                for(var i in res.data.data){
-                  var row ={}
-                  row.id = res.data.data[i]
-                  row.title = i
-                  this.tableData.push(row)
-                }
+                // for(var i in res.data.data){
+                //   var row ={}
+                //   row.id = res.data.data[i]
+                //   row.title = i
+                  this.tableData = eval(res.data.data)
+                // }
                 
                 // console.info("111"+this.tableData)
               },function(error){

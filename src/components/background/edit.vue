@@ -3,6 +3,8 @@
       <div id="title">
           <span>标题: 
 <el-input style="width:20%" v-model="inputtitle" placeholder="请输入内容"></el-input></span>
+        <span>简介: 
+<el-input style="width:30%" v-model="inputsummary" placeholder="请输入内容"></el-input></span>
       </div>
       <div id="editor" style="text-align: left; width:60%">
           <!-- {{articledetail[1]}} -->
@@ -46,6 +48,7 @@ export default {
             isnew: this.$route.query.isnew,
             articledetail: [],
             inputtitle: null,
+            inputsummary: null,
             edit: null,//临时存editor
             buildarticle:{
                 artid: Number,
@@ -67,7 +70,7 @@ export default {
                 window.alert("你还未选择分类！");
             } else {
             this.buildarticle.title = this.inputtitle
-            this.buildarticle.summary = "无"
+            this.buildarticle.summary = this.inputsummary
             // 思路就是：先在create()初始化当前有的分类。并展示，然后再submit()中用axios来进行已选分类的保存，然后后端接口可能有问题的话就是调bug了
             // 2021-1-5:已选分类的文章，在编辑时应该带上之前选的分类情况，
             // 还有就是未选择分类（非随笔且未选择其他分类的不允许被提交）ok
@@ -180,9 +183,10 @@ export default {
                 data: {},
                 headers:{ token:'',client:'' }
                 }).then(res =>{
-                    
+                    console.log(res.data.data)
                     this.inputtitle = res.data.data[0]                    
                     editor.txt.append(res.data.data[1])
+                    this.inputsummary = res.data.data[3]
                  },function(error){
                     console.log(error.res)
                 })
