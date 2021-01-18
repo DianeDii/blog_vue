@@ -2,18 +2,19 @@
   <div id="editblog">
       <div id="title">
           <span>标题: 
-<el-input style="width:20%" v-model="inputtitle" placeholder="请输入内容"></el-input></span>
-        <span>简介: 
-<el-input style="width:30%" v-model="inputsummary" placeholder="请输入内容"></el-input></span>
+            <el-input style="width:20%" v-model="inputtitle" placeholder="请输入内容"></el-input></span>
+          <span>简介: 
+            <el-input style="width:30%" v-model="inputsummary" placeholder="请输入内容"></el-input></span>
       </div>
-      <div id="editor" style="text-align: left; width:60%">
-          <!-- {{articledetail[1]}} -->
-      </div>
+          <span v-if="isproject">地址: 
+            <el-input style="width:30%" v-model="inputaddress" placeholder="请输入内容"></el-input></span>
+      <div id="editor" style="text-align: left; width:60%" v-if="!isproject"></div>
+      
       <div id="sort">
           <el-button id="btn" type="primary" @click="submit">提交</el-button>
           <el-button type="primary" @click="reset">放弃</el-button>
           <!-- <el-button type="primary" @click="out">自定义调试</el-button> -->
-          <span id="switch">生活随笔:</span>
+          <span id="switch" v-if="!isproject">生活随笔:</span>
           <el-switch
             v-model="islife"
             active-color="#13ce66"
@@ -21,7 +22,8 @@
         </el-switch>
           
       </div>
-      <div id="select" v-if="!islife">
+      <div v-if="!isproject">
+        <div id="select" v-if="!islife" >
           <span>详细分类：</span>
             <el-select v-model="sortchoose" placeholder="请选择">
                 <el-option
@@ -31,6 +33,7 @@
                 :value="item.id">
                 </el-option>
             </el-select>
+        </div>
       </div>
 
   </div>
@@ -60,13 +63,75 @@ export default {
             sortlist: [],
             sortchoose: '',
             isnewArtid: Number,
-            sortdata: null //文章分类提交数据
+            sortdata: null,//文章分类提交数据
+            isproject: this.$route.query.isproject,
+            url: null,//存project链接地址
+            inputaddress: null,
         }
     },
     methods:{
         // out(){},
         async submit(){
-            if (this.islife === false && this.sortchoose == '') {
+            if(this.isproject == true){
+                this.buildarticle.title = this.inputtitle
+                this.buildarticle.summary = this.inputsummary
+                this.buildarticle.content = this.url
+                if(this.isnew ==="true"){
+                    await this.axios({
+                        url:'/blog/init',
+                        method: 'post',
+                        data: this.buildarticle,
+                        headers:{ token:'',client:'' }
+                        }).then(res =>{
+                            console.log("提交文章信息")
+                            this.isnewArtid =res.data.data;
+                        // 构造分类提交数据
+                            this.sortdata ={"sortId":2,"articleId":this.isnewArtid}
+                        },function(error){
+                            console.log(error.res)
+                        })
+
+                        //  提交分类信息
+                        await this.axios({
+                        url:'/sort/add',
+                        method: 'post',
+                        data: this.sortdata,
+                        headers:{ token:'',client:'' }
+                        }).then(res =>{
+                            console.log("为文章加分类成功")
+                            this.$router.push("/backindex")
+                        },function(error){
+                            console.log(error.res)
+                        })
+                }else{
+                    this.buildarticle.artid = this.$route.query.id
+                    this.axios({
+                        url:'/blog/update',
+                        method: 'post',
+                        data: this.buildarticle,
+                        headers:{ token:'',client:'' }
+                        }).then(res =>{
+                            console.log("更新成功")
+                        },function(error){
+                            console.log(error.res)
+                        })
+
+                        this.sortdata ={"sortId":2,"articleId":this.$route.query.id}
+                        this.axios({
+                            url:'/sort/add',
+                            method: 'post',
+                            data: this.sortdata,
+                            headers:{ token:'',client:'' }
+                        }).then(res =>{
+                            console.log("为文章加分类成功")
+                            this.$router.push("/backindex")
+                        },function(error){
+                            console.log(error.res)
+                        })
+                }
+                // 新建提交/编辑提交project
+            }else{
+               if (this.islife === false && this.sortchoose == '') {
                 window.alert("你还未选择分类！");
             } else {
             this.buildarticle.title = this.inputtitle
@@ -75,11 +140,7 @@ export default {
             // 2021-1-5:已选分类的文章，在编辑时应该带上之前选的分类情况，
             // 还有就是未选择分类（非随笔且未选择其他分类的不允许被提交）ok
             // 这块整完了看一下文章怎么支持带格式的存数据库
-
             // Q:多个axios执行顺序问题
-
-            
-
             if(this.isnew === "true"){
                 this.buildarticle.content = this.edit.txt.html()
                 // 新建文章
@@ -144,64 +205,86 @@ export default {
                     },function(error){
                         console.log(error.res)
                     })
-            }  
+                }  
             }
- 
-        
-        },
+        }        
+    },
    
         reset(){
             console.log("exit")
             this.$router.push("/backindex")
         },
-
     },
     created () {
-      this.axios.get('/sort/list').then(response=> {
-          this.sortlist = response.data.data;
-          this.sortlist.shift();//删除随笔的分类
-        //   console.log(this.sortlist.data)
-        }).catch(function (error) {
+        if(this.isproject == true){}else{
+          this.axios.get('/sort/list').then(response=> {
+            this.sortlist = response.data.data;
+          }).catch(function (error) {
             console.log(error);
         });
+        }
     },
     mounted(){
-        const editor = new E('#editor')
-        // 在这new的editor在别的方法里获取不到，我就把它先存到data里，其他方法中调用data中的edit就可以了
-        this.edit = editor
-        editor.create()
-        // if 点新建进来的，内容就置为空， else 获取当前点击文章id，初始化文章内容
-        if (this.isnew === "true") {
-            this.articledetail.artid = null
-            this.articledetail.title = null
-            this.articledetail.summary = null
-            this.articledetail.content = null
-        }else{
-            this.axios({
-                url:'/blog/'+this.$route.query.id,
-                method: 'get',
-                data: {},
-                headers:{ token:'',client:'' }
-                }).then(res =>{
-                    console.log(res.data.data)
-                    this.inputtitle = res.data.data[0]                    
-                    editor.txt.append(res.data.data[1])
-                    this.inputsummary = res.data.data[3]
-                 },function(error){
-                    console.log(error.res)
+        if(this.isproject == true){
+            if (this.isnew === "true") {
+                this.articledetail.artid = null
+                this.articledetail.title = null
+                this.articledetail.summary = null
+                this.articledetail.content = null
+            }else{
+                this.axios({
+                    url:'/blog/'+this.$route.query.id,
+                    method: 'get',
+                    data: {},
+                    headers:{ token:'',client:'' }
+                    }).then(res =>{
+                        console.log(res.data.data)
+                        this.inputtitle = res.data.data[0]                    
+                        this.url = res.data.data[1]
+                        this.inputsummary = res.data.data[3]
+                    },function(error){
+                        console.log(error.res)
+                    })
+            }
+        }
+        else{
+            const editor = new E('#editor')
+            // 在这new的editor在别的方法里获取不到，我就把它先存到data里，其他方法中调用data中的edit就可以了
+            this.edit = editor
+            editor.create()
+            // if 点新建进来的，内容就置为空， else 获取当前点击文章id，初始化文章内容
+            if (this.isnew === "true") {
+                this.articledetail.artid = null
+                this.articledetail.title = null
+                this.articledetail.summary = null
+                this.articledetail.content = null
+            }else{
+                this.axios({
+                    url:'/blog/'+this.$route.query.id,
+                    method: 'get',
+                    data: {},
+                    headers:{ token:'',client:'' }
+                    }).then(res =>{
+                        console.log(res.data.data)
+                        this.inputtitle = res.data.data[0]                    
+                        editor.txt.append(res.data.data[1])
+                        this.inputsummary = res.data.data[3]
+                    },function(error){
+                        console.log(error.res)
+                    })
+                    
+                // 在这加载已定义分类信息
+                this.axios.get('/sort/'+this.$route.query.id).then(res=>{
+                    // console.log(res.data.data)
+                    if(res.data.data == 1){
+                        this.islife =true
+                    }else{
+                        this.sortchoose =res.data.data
+                    }
+                }).catch(function(err){
+                    console.log(err)
                 })
-                
-            // 在这加载已定义分类信息
-            this.axios.get('/sort/'+this.$route.query.id).then(res=>{
-                // console.log(res.data.data)
-                if(res.data.data == 1){
-                    this.islife =true
-                }else{
-                    this.sortchoose =res.data.data
-                }
-            }).catch(function(err){
-                console.log(err)
-            })
+            }
         }
     }
 

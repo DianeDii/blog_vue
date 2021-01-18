@@ -17,9 +17,9 @@ export default {
         }
     },
     methods:{
-        out(){
-            console.log(this.result);
-        },
+        // out(){
+        //     console.log(this.result);
+        // },
         getblogid(blogid){
             this.$router.push({
             path:'/blog/'+blogid,

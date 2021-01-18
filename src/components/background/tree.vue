@@ -18,6 +18,14 @@
         <i class="el-icon-menu"></i>
         <span slot="title">分类管理</span>
       </el-menu-item>
+      <el-menu-item index="/backindex" @click="getnav(3)">
+        <i class="el-icon-menu"></i>
+        <span slot="title">实验室管理</span>
+      </el-menu-item>
+      <el-menu-item index="/backindex" @click="getnav(4)">
+        <i class="el-icon-menu"></i>
+        <span slot="title">个人管理</span>
+      </el-menu-item>
     </el-menu>
   </el-col>
 </el-row>

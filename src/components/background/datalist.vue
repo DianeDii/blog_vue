@@ -1,6 +1,6 @@
 <template>
   <div id="datalist">
-  <el-table
+  <el-table v-if="nav != 4"
     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
     style="width: 100%">
     <el-table-column
@@ -34,6 +34,10 @@
       </template>
     </el-table-column>
   </el-table>
+    <div id="info" v-if="nav ==4">
+      <div id="editor" style="text-align: left; width:60%"></div>
+      <el-button id="btn" type="primary" @click="submit">提交</el-button>
+    </div>
   </div>
 </template>
 <style>
@@ -47,7 +51,9 @@
 </style>
 
 <script>
+import E from "wangeditor";
   export default {
+    name: "Editor",
     methods: {
       handleEdit(index, row) {
         if(this.nav === 1){
@@ -55,20 +61,48 @@
           path:'/editblog',
           query:{
             isnew: false,
-            id: row.id
+            id: row.id,
+            isproject: false
           }
         })
-        console.log(index, row.id,row.title);
-        }else{
+        // console.log(index, row.id,row.title);
+        }else if(this.nav ===2){
           // 出一个弹框：https://element.eleme.cn/#/zh-CN/component/message-box
           // 获取改完后的数据再axios传后面
           // 刷新组件
           // 同理还有删除
+          this.$prompt('请输入新的分类名称','提示',{
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(({value}) =>{
+              var params ={"sortid":row.id,"value":value}
+            this.axios.post('/sort/update',params).then(res =>{
+              this.$message({
+                type: 'success',
+                message: '分类信息修改成功'
+              })
+              this.reloadAll()
+            }).catch(function(err){
+              console.log(err)
+            })
+          })
+        }else if(this.nav ===3){
+          // 新建一个edit页面或者改造editblog页面，改造吧，传的时候加一个新参数判断是labor进来的
+          this.$router.push({
+            path:'/editblog',
+            query:{
+              isnew: false,
+              id: row.id,
+              isproject: true
+            }
+          })
+        }else{
+          console.log("nav不存在")
         }
-
       },
+
       handleDelete(index, row) {
-        if(this.nav === 1){
+        if(this.nav === 1 || this.nav === 3){
         let params= new URLSearchParams()
         params.append('artID',row.id)
 
@@ -79,16 +113,32 @@
               headers:{ token:'',client:'' }
               }).then(res =>{
                 console.log("删除成功")
-                window.location.reload()           
+                this.reloadAll();     
               },function(error){
                   console.log(error.res)
               }) 
         console.log(index, row);
-        }else{
+        }else if(this.nav ===2){
           // 删除sort
-          this.axios.delete('/')
+          // 之前简写axios一直报错sortId is not present ,原因应该是没有设headers
+          var params= new URLSearchParams()
+          params.append('sortId',row.id)
+          this.axios({
+              url:'/sort/del',
+              method: 'delete',
+              data: params,
+              headers:{ token:'',client:'' }
+              }).then(res =>{
+                this.reloadAll()
+                console.log("删除成功！")
+              }).catch(function(err){
+                console.log(err)
+              })
+        }else{
+          console("nav选到别的了"+this.nav)
         }
       },
+
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 2) {
           return 'warning-row';
@@ -112,11 +162,54 @@
       return jslength
       },
       newblog(){
+        if(this.nav === 1){
         this.$router.push({
           path:'/editblog',
           query:{
-            isnew: true
+            isnew: true,
+            isproject: false
           }
+        })
+        console.log(this.nav)
+        }else if(this.nav ===2){
+          this.$prompt('请输入新的分类名称','提示',{
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(({value}) =>{
+                let params= new URLSearchParams()
+                params.append('sortName',value)
+            this.axios.post('/sort/create',params).then(res =>{
+              this.$message({
+                type: 'success',
+                message: '创建分类成功'
+              })
+              this.reloadAll()
+            }).catch(function(err){
+              console.log(err)
+            })
+          })
+        }else if(this.nav ===3){
+          this.$router.push({
+            path:'/editblog',
+            query:{
+              isnew: true,
+              isproject: true
+            }
+          })
+          console.log(this.nav)
+        }
+      },
+      submit(){
+        // 这里只用content，其他的随笔填
+        this.buildarticle.content = this.edit.txt.html()
+        this.buildarticle.artid = 102
+        this.buildarticle.title = "me"
+        this.buildarticle.summary = "me"
+        this.axios.post('/blog/update',this.buildarticle).then(res =>{
+          this.reloadAll()
+          console.log("更新成功！")
+        }).catch(function(err){
+          console.log(err)
         })
       },
 
@@ -127,9 +220,18 @@
         nav: 1,
         isRouterAlive: true,
         tableData: [],
-        search: ''
+        search: '',
+        edit:null,
+        buildarticle:{
+          artid: Number,
+          title: String,
+          summary: String,
+          content: String
+        }
+        
       }
     },
+
     watch:{
       listennavid:{
         immediate: true,
@@ -154,11 +256,12 @@
                   this.tableData = eval(res.data.data)
                 // }
                 
-                // console.info("111"+this.tableData)
+                // console.info(this.tableData)
               },function(error){
                   console.log(error.res)
               }) 
           }else if(this.nav === 2){
+            this.tableData = []
         // 初始化分类list
             this.axios({
               url:'/sort/list',
@@ -178,12 +281,32 @@
               },function(error){
                   console.log(error.res)
               }) 
+      }else if(this.nav === 3){
+        // /sort/2
+        this.tableData =[];
+          this.axios.get('/blog/listbysort/2').then(res =>{
+            // console.log(res.data.data)
+            // 几个nav直接来回点，之前的nav内容应该清理，不清理就会有问题
+              this.tableData = eval(res.data.data)
+          }).catch(function(err){
+            console.log(err)
+          })
+      }else if(this.nav ===4){
+
+      // /sort/3  内只有一篇文章，直接获取文章
+         this.axios.get('/blog/102').then(res =>{
+          const editor = new E('#editor')
+          this.edit = editor
+          editor.create()
+           editor.txt.append(res.data.data[1])
+            // this.tableData = eval(res.data.data)
+         }).catch(function(err){
+           console.log(err)
+         })
       }else{
         console.log("获取navid错误")
       }
-     }
-   }  
-    },
+     }}},
     computed:{
       listennavid(){
           return this.$store.state.navid

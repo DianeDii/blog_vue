@@ -4,7 +4,7 @@
     <ul id="list">
         <router-link :to="'/blog/'+artid">
         <li v-for='(item,index) in articleData' @click="getArticleId(item)" >
-                <a href="#"><span>{{index}}</span></a>
+                <a href="#"><span>{{item.title}} : {{item.summary}}</span></a>
         </li>
         </router-link>
     </ul>
@@ -27,7 +27,7 @@ export default {
         data: {},
         headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf-8' }
         }).then(res =>{
-            this.articleData = res.data.data
+            this.articleData = eval(res.data.data)
             console.log(res.data.data) 
         },function(error){
             console.log(error.res)
