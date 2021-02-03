@@ -6,23 +6,24 @@
           <span>简介: 
             <el-input style="width:30%" v-model="inputsummary" placeholder="请输入内容"></el-input></span>
       </div>
-          <span v-if="isproject">地址: 
-            <el-input style="width:30%" v-model="inputaddress" placeholder="请输入内容"></el-input></span>
-      <div id="editor" style="text-align: left; width:60%" v-if="!isproject"></div>
-      
+      <div id="editor" style="text-align: left; width:60%" v-if="isproject == 'false'"></div>
+      <div id="address">
+        <span v-if="isproject =='true'">地址:
+          <el-input style="width:30%" v-model="inputaddress" placeholder="请输入内容"></el-input></span>
+      </div>
       <div id="sort">
           <el-button id="btn" type="primary" @click="submit">提交</el-button>
           <el-button type="primary" @click="reset">放弃</el-button>
           <!-- <el-button type="primary" @click="out">自定义调试</el-button> -->
-          <span id="switch" v-if="!isproject">生活随笔:</span>
-          <el-switch
+          <span id="switch" v-if="isproject == 'false'">生活随笔:</span>
+          <el-switch v-if="isproject == 'false'"
             v-model="islife"
             active-color="#13ce66"
             inactive-color="#ff4949">
         </el-switch>
           
       </div>
-      <div v-if="!isproject">
+      <div v-if="isproject == 'false'">
         <div id="select" v-if="!islife" >
           <span>详细分类：</span>
             <el-select v-model="sortchoose" placeholder="请选择">
@@ -49,6 +50,7 @@ export default {
     data(){
         return{
             isnew: this.$route.query.isnew,
+            isproject: this.$route.query.isproject,
             articledetail: [],
             inputtitle: null,
             inputsummary: null,
@@ -118,12 +120,12 @@ export default {
 
                         this.sortdata ={"sortId":2,"articleId":this.$route.query.id}
                         this.axios({
-                            url:'/sort/add',
+                            url:'/sort/artupdate',
                             method: 'post',
                             data: this.sortdata,
                             headers:{ token:'',client:'' }
                         }).then(res =>{
-                            console.log("为文章加分类成功")
+                            console.log("为文章更新分类成功")
                             this.$router.push("/backindex")
                         },function(error){
                             console.log(error.res)
@@ -195,12 +197,12 @@ export default {
                          this.sortdata ={"sortId": this.sortchoose,"articleId":this.$route.query.id}
                 }
                       this.axios({
-                        url:'/sort/add',
+                        url:'/sort/artupdate',
                         method: 'post',
                         data: this.sortdata,
                         headers:{ token:'',client:'' }
                     }).then(res =>{
-                        console.log("为文章加分类成功")
+                        console.log("为文章更新分类成功")
                         this.$router.push("/backindex")
                     },function(error){
                         console.log(error.res)
@@ -292,9 +294,10 @@ export default {
 </script>
 
 <style>
-#editor{
+#editor,#address{
     margin-left: 20%;
 }
+
 #sort{
     position: relative;
     margin-left: 20%;

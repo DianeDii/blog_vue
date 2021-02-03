@@ -4,6 +4,7 @@
     <ul id="list">
         <router-link :to="'/blog/'+artid">
         <li v-for='(item,index) in articleData' @click="getArticleId(item)" >
+            {{moment(item.modifiedBy).format("YYYY-MM-DD")}} » 
                 <a href="#"><span>{{item.title}} : {{item.summary}}</span></a>
         </li>
         </router-link>
@@ -12,12 +13,14 @@
 </template>
 
 <script>
+import moment from 'moment'; 
 export default {
  
     data() {
         return {
             artid: 0,
             articleData: null,
+            moment,
         }
     },
     created(){
@@ -52,7 +55,7 @@ export default {
         margin-right: 80%;
     }
     #list{
-        width: 300px;
+        width: 400px;
     }
     li{
         position: static;

@@ -21,7 +21,7 @@ export default {
     data () {
       return {
         introduce: String,
-        squareUrl: "https://api.prodless.com/avatar.png",
+        squareUrl: "http://dianedii-iamge.oss-cn-beijing.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210122170543.jpg?OSSAccessKeyId=LTAI4G5iZBoNMGL35GkRdqn5&Expires=5211306378&Signature=GMI7xY7PJSeHsy7NCiKUAxOawgs%3D",
         github:"http://dianedii-iamge.oss-cn-beijing.aliyuncs.com/GitHub-Mark.png?OSSAccessKeyId=LTAI4G5iZBoNMGL35GkRdqn5&Expires=1710952194&Signature=y9iV1f9a3SkNYYOhJjlP8miqbAs%3D",
         douban:"http://dianedii-iamge.oss-cn-beijing.aliyuncs.com/%E8%B1%86%E7%93%A3.png?OSSAccessKeyId=LTAI4G5iZBoNMGL35GkRdqn5&Expires=5210952837&Signature=sFiXrCmlXlxKaZRHC9CeJxNCpDw%3D",
         twitter:"http://dianedii-iamge.oss-cn-beijing.aliyuncs.com/twitter.jpg?OSSAccessKeyId=LTAI4G5iZBoNMGL35GkRdqn5&Expires=5210952267&Signature=O2eX5y1iDtaGtzmxRWjQuQmRGmU%3D",

@@ -4,7 +4,8 @@
     <ul id="list">
         <router-link :to="'/blog/'+artid">
         <li v-for='(item,index) in articleData' @click="getArticleId(item)" >
-                <a href="#"><span>{{index}}</span></a>
+                {{moment(item.modifiedBy).format("YYYY-MM-DD")}} » 
+                <a href="#"><span>{{item.title}} : {{item.summary}}</span></a>
         </li>
         </router-link>
     </ul>
@@ -12,18 +13,20 @@
 </template>
 
 <script>
+import moment from 'moment'; 
 export default {
  
     data() {
         return {
             artid: 0,
             articleData: null,
+            moment,
         }
     },
     created(){
         this.axios.get("/blog/listBlog").then
             ((response) => {
-                this.articleData = response.data.data
+                this.articleData = eval(response.data.data)
                 console.log(this.articleData)
                 },function(err){
                     console.log(err.response)

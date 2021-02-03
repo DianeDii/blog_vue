@@ -25,5 +25,11 @@ export default {
 </script>
 
 <style>
+#content{
+  position: relative;
+  margin-left: 10%;
+  border:5px solid red;
+  width: 500px;
 
+}
 </style>
