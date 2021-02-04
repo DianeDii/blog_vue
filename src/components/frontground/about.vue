@@ -39,6 +39,11 @@ export default {
 </script>
 
 <style>
+#about{
+  position: fixed;
+  width: 100%;
+  height: 80%;
+}
 #info{
   position: relative;
   height: 200px;

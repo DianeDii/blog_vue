@@ -1,6 +1,6 @@
 <template>
   <div id="life">
-    <h3>随笔</h3><br>
+    <h3>随笔</h3>
     <ul id="list">
         <router-link :to="'/blog/'+artid">
         <li v-for='(item,index) in articleData' @click="getArticleId(item)" >
@@ -50,18 +50,23 @@ export default {
 </script>
 
 <style>
+    #life{
+        position: fixed;
+        width: 100%;
+        height: 80%;
+    }
     h3{
-        height: 50px;
         margin-right: 80%;
+        height: 50px;
     }
     #list{
-        width: 400px;
+        width: 50%;
     }
     li{
         position: static;
         margin-left: 40%;
         height: 30px;
-        text-align: left;;
+        text-align: left;
     }
     a:link{
         color: #567;

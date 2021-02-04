@@ -1,7 +1,7 @@
 <template>
   <div id="index" >
       <div id="recentBlog">
-        <span id="last">最近文章</span>
+        <h3>最近文章</h3>
         <ul id="list">
             <!-- <router-link :to="'/blog/'+artid"> -->
             <li v-for="item in articleData" @click="getArticleId(item.id)" style="width:700px">
@@ -88,20 +88,23 @@ export default {
 </script>
 
 <style>
-    #last{
-        height: 50px;
+    #index{
+        position: fixed;
+        width: 100%;
+        height: 80%;
+    }
+    h3{
         margin-right: 80%;
+        height: 50px;
     }
     #list{
-        width: 300px;
+        width: 50%;
     }
     li{
         position: static;
         margin-left: 40%;
         height: 30px;
         text-align: left;
-        font-size: 1.6em;
-        line-height: 220%;
     }
     #recentBlog{
         position: relative;
