@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import blog from '@/components/frontground/blog.vue'
-import life from '@/components/frontground/life.vue'
-import labor from '@/components/frontground/labor.vue'
-import about from '@/components/frontground/about.vue'
-import index from '@/components/frontground/index.vue'
-import detail from '@/components/frontground/artdetail.vue'
+import blog from '@/components/new_front/blog.vue'
+import life from '@/components/new_front/life.vue'
+import labor from '@/components/new_front/labor.vue'
+import about from '@/components/new_front/about.vue'
+import detail from '@/components/new_front/artdetail.vue'
 import login from '@/components/frontground/login.vue'
 import backindex from '@/components/background/b_index.vue'
 import datalist from '@/components/background/datalist.vue'
@@ -13,19 +12,26 @@ import editblog from '@/components/background/edit.vue'
 import cookie from '../utils/cookie'
 import searchlist from '@/components/frontground/searchlist.vue'
 
-Vue.use(Router)
 
+
+import home from '@/components/new_front/home.vue'
+
+Vue.use(Router)
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 const router = new Router({
   
   routes: [
     { 
       path: '/', 
-      redirect: '/index' 
+      redirect: '/home' 
     },
     {
-      path: '/index',
-      name: 'index',
-      component: index
+      path: '/home',
+      name: 'home',
+      component: home
     },
     {
       path: '/blog',
@@ -90,12 +96,12 @@ const router = new Router({
 })
 
 /*
-* beforeEach:从一个页面跳转到另外一个页面时触发
-* to:要跳转的页面
-* from:从哪个页面出来
-* next:决定是否通过
+* beforeEach:从一个页面跳转到另外一个页面时触发
+* to:要跳转的页面
+* from:从哪个页面出来
+* next:决定是否通过
 */
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   if(to.matched.some(res => res.meta.requestAuth)){
       if(cookie.getCookie("value")){
         next()
@@ -109,4 +115,5 @@ router.beforeEach((to, from, next) => {
     next()
   }
   })
+  
   export default router
