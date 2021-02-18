@@ -11,6 +11,7 @@ import datalist from '@/components/background/datalist.vue'
 import editblog from '@/components/background/edit.vue'
 import cookie from '../utils/cookie'
 import searchlist from '@/components/frontground/searchlist.vue'
+import NotFound from '@/components/new_front/404.vue'
 
 
 
@@ -22,7 +23,7 @@ Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 const router = new Router({
-  
+  mode: 'history',
   routes: [
     { 
       path: '/', 
@@ -92,6 +93,10 @@ const router = new Router({
       name: 'searchlist',
       component: searchlist
     },
+    { 
+      path: '*', 
+      name: NotFound,
+      component: NotFound },
   ]
 })
 

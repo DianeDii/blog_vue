@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios)
-axios.defaults.baseURL = 'http://127.0.0.1:8081';
+axios.defaults.baseURL = 'https://dianedii.top/api/';
 // axios.defaults.baseURL = 'http://8.131.228.245:8081';
 /* eslint-disable no-new */
 new Vue({
