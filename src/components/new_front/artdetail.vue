@@ -37,10 +37,9 @@ created(){
     #content{
         position: fixed;
         top: 0;
-        width: 900px;
+        width: 100%;
         height: 100%;
-        margin-left: 20%;
         font-size: 15px;
+        overflow: scroll;
     }
-
 </style>

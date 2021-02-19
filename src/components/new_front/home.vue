@@ -9,6 +9,7 @@
             <div  v-for="(item,index) in partData" @click="tothere(index)"><a href="">{{item}}</a></div>
         </div>
     </div>
+    <div id="footer">京ICP备2021004507号</div>
   </div>
 </template>
 
@@ -92,6 +93,21 @@ export default {
       width: 100%;
       height: 100%;
       background-image: url("https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/v2-8686bd00b995318fa66e8690b9e2dd95_r.jpg");
+  }
+  #footer{
+    position: fixed;
+    width: 150px;
+    height: 50px;
+    margin:auto;
+    left:0;
+    right:0;
+    bottom:0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+    font-size: 14px;
   }
 </style>
 

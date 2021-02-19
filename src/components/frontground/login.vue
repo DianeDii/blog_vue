@@ -47,7 +47,7 @@ data() {
           console.log("登录成功")
           cookie.setCookie(res.data.data,1)
           console.log(res)
-          window.location.href = "#/backindex"; 
+          window.location.href = "/backindex"; 
           }
           
         },function(error){

@@ -17,8 +17,4 @@ export default {
 </script>
 
 <style>
-  body{
-    /* background-color: bisque; */
-  }
-
 </style>
