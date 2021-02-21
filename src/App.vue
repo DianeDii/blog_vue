@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
@@ -12,7 +12,25 @@ import home from './components/new_front/home.vue'
 export default {
   // components: {navMenu},
   name: 'App',
-  components:{home}
+  components:{home},
+  provide() {
+        return {
+            reloadAll: this.reloadAll
+        }
+    },
+  data() {
+      return {
+          isRouterAlive: true
+      }
+  },
+  methods: {
+      reloadAll() {
+          this.isRouterAlive = false
+          this.$nextTick(() => {
+              this.isRouterAlive = true
+          })
+      }
+  }
 }
 </script>
 

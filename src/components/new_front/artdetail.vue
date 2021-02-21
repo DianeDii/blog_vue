@@ -6,7 +6,7 @@
         <h2 v-if="articledetail != null" v-html="articledetail[0]"></h2><br>
         <p v-if="articledetail != null" v-html="articledetail[1]"></p>
         <br>
-        <span v-if="articledetail != null">{{articledetail[2]}}</span>
+        <span v-if="articledetail != null">{{articledetail[2]}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</a></span>
       </div>
   </div>
 </template>
@@ -17,6 +17,12 @@ data(){
     return{
         articledetail: null,
     }
+},
+methods:{
+
+},
+mounted(){
+
 },
 created(){
     this.axios({
@@ -35,11 +41,20 @@ created(){
 
 <style scoped>
     #content{
-        position: fixed;
+        position: relative;
+        margin-left: 20%;
         top: 0;
+        width: 60%;
+        /* height: 100%; */
+        font-size: 15px;
+
+    }
+    /* #background{
+        position:absolute;
+        left:0;
+        top:0;
         width: 100%;
         height: 100%;
-        font-size: 15px;
-        overflow: scroll;
-    }
+        background-color: blanchedalmond;
+    } */
 </style>

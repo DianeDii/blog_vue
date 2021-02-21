@@ -17,11 +17,6 @@
       align="right">
       <template slot="header" slot-scope="scope">
         <el-button type="primary" id="newbtn" @click="newblog">新建</el-button>
-        <el-input
-          v-model="search"
-          size="mini"
-          style="width: 30%"
-          placeholder="输入关键字搜索"/>
       </template>
       <template slot-scope="scope">
         <el-button
@@ -130,7 +125,7 @@ import E from "wangeditor";
               headers:{ token:'',client:'' }
               }).then(res =>{
                 this.reloadAll()
-                console.log("删除成功！")
+                console.log("删除分类成功！")
               }).catch(function(err){
                 console.log(err)
               })
@@ -147,13 +142,14 @@ import E from "wangeditor";
         }
         return '';
       },
-      reloadAll() {
-        this.isRouterAlive = false
-        this.$nextTick(() => {
-        this.isRouterAlive = true
-        
-        })
-      },
+      // reloadAll() {
+      //   var tmp = this.nav;
+      //   window.location.reload();
+      //   this.$store.commit('getnavdata',tmp)
+      //   // this.nav = tmp;
+      //   console.log("roadAll方法执行了,当前的nav="+ this.nav)
+      //   this.reload()
+      // },
       getjsonlen(json){
       var jslength=0;
       for(var js2 in json){
@@ -214,6 +210,7 @@ import E from "wangeditor";
       },
 
     },
+    inject: ['reloadAll'],
     data() {
       return {
         // search: String,
@@ -231,13 +228,13 @@ import E from "wangeditor";
         
       }
     },
-
+// 监听tree，根据不同节点初始化不同datalist
     watch:{
       listennavid:{
         immediate: true,
         handler: function (newval) {
           this.nav = newval
-          this.reloadAll()
+          // this.reloadAll()
           this.tableData = []
           // window.location.reload()
           if (this.nav === 1) {
@@ -314,7 +311,7 @@ import E from "wangeditor";
     }
   }
 </script>
-<style>
+<style scoped>
 #newbtn{
   position: relative;
   margin: 5%;

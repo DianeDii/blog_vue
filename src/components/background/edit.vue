@@ -1,42 +1,42 @@
 <template>
   <div id="editblog">
-      <div id="title">
-          <span>标题: 
+      <div id="background"></div>
+      <div id="content">
+        <div id="title">
+          <span>标题: &emsp;&emsp;&emsp;
             <el-input style="width:20%" v-model="inputtitle" placeholder="请输入内容"></el-input></span>
-          <span>简介: 
+          <span>简介: &emsp;&emsp;&emsp;
             <el-input style="width:30%" v-model="inputsummary" placeholder="请输入内容"></el-input></span>
-      </div>
-      <div id="editor" style="text-align: left; width:60%" v-if="isproject == 'false'"></div>
-      <div id="address">
-        <span v-if="isproject =='true'">地址:
-          <el-input style="width:30%" v-model="inputaddress" placeholder="请输入内容"></el-input></span>
-      </div>
-      <div id="sort">
-          <el-button id="btn" type="primary" @click="submit">提交</el-button>
-          <el-button type="primary" @click="reset">放弃</el-button>
-          <!-- <el-button type="primary" @click="out">自定义调试</el-button> -->
-          <span id="switch" v-if="isproject == 'false'">生活随笔:</span>
-          <el-switch v-if="isproject == 'false'"
-            v-model="islife"
-            active-color="#13ce66"
-            inactive-color="#ff4949">
-        </el-switch>
-          
-      </div>
-      <div v-if="isproject == 'false'">
-        <div id="select" v-if="!islife" >
-          <span>详细分类：</span>
-            <el-select v-model="sortchoose" placeholder="请选择">
-                <el-option
-                v-for="item in sortlist"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-                </el-option>
-            </el-select>
+        </div>
+        <div id="editor" style="text-align: left; width:60%"></div>
+        <div id="foo">
+            <div id="choose">
+                <span id="switch" v-if="isproject == 'false'">生活随笔:</span>
+                <el-switch v-if="isproject == 'false'"
+                    v-model="islife"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                </el-switch>
+            </div>
+            <div id="detailchoose" v-if="isproject == 'false'">
+                <div id="select" v-if="!islife" >
+                <span>详细分类：</span>
+                    <el-select v-model="sortchoose" placeholder="请选择">
+                        <el-option
+                        v-for="item in sortlist"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div id="sort">
+                <el-button id="btn" type="primary" @click="submit">提交</el-button>
+                <el-button type="primary" @click="reset">放弃</el-button>
+            </div>
         </div>
       </div>
-
   </div>
 </template>
 
@@ -74,10 +74,10 @@ export default {
     methods:{
         // out(){},
         async submit(){
-            if(this.isproject == true){
+            if(this.isproject == 'true'){
                 this.buildarticle.title = this.inputtitle
                 this.buildarticle.summary = this.inputsummary
-                this.buildarticle.content = this.url
+                this.buildarticle.content = this.edit.txt.html()
                 if(this.isnew ==="true"){
                     await this.axios({
                         url:'/blog/init',
@@ -293,7 +293,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #editor,#address{
     margin-left: 20%;
 }
@@ -307,9 +307,9 @@ export default {
   .el-select-dropdown {
      top: 680px !important;
   }
-#switch{
+/* #switch{
     margin-left: 100px;
-}
+} */
 
 /* wangEditor样式 */
 /* table 样式 */
@@ -356,5 +356,61 @@ pre code {
 /* ul ol 样式 */
 ul, ol {
   margin: 10px 0 10px 20px;
+}
+#background{
+    position:absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    /* background-color: antiquewhite; */
+}
+#title{
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+#title > span{
+    width: 200px;
+    margin-left: 100px;
+    font-size: 13px;
+}
+#foo{
+    width: 60%;
+    height: 100px;
+    margin-left: 20%;
+    margin-top: 50px;
+    
+}
+#sort{
+    position: relative;
+    float: right;
+}
+#choose{
+    /* position:absolute;
+    left: 0;
+    top: 0; */
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 40px;
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+    margin-right: 100px;
+}
+#select {
+    position: relative;
+    float: left;
+}
+
+#address{
+    position: relative;
+    width: 500px;
+    margin-left: 35%;
+}
+#address > span{
+    width: 500px;
 }
 </style>

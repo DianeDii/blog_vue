@@ -3,7 +3,7 @@
     <div class="background"></div>
     <div id="content">
         <div id="avatar">
-            <el-avatar :size="100" shape="square" src="https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210122170543.jpg"></el-avatar>
+            <el-avatar :size="100" shape="square" src="https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/image-20210221194101786.png"></el-avatar>
         </div>
         <div id="tit">
             <div  v-for="(item,index) in partData" @click="tothere(index)"><a href="">{{item}}</a></div>

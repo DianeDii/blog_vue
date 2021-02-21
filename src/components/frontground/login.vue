@@ -58,7 +58,7 @@ data() {
 }
 </script>
 
-<style>
+<style scoped>
     #login{
         margin-top: 5%;
         margin-left: 40%;

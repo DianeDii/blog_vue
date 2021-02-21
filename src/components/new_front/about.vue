@@ -24,7 +24,7 @@ export default {
     data () {
       return {
         introduce: String,
-        squareUrl: "https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20210122170543.jpg",
+        squareUrl: "https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/image-20210221194101786.png",
         github:"https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/GitHub-Mark.png",        
         douban:"https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/%E8%B1%86%E7%93%A3.png",
         twitter:"https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/twitter.jpg",

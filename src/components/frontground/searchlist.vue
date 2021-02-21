@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     #searchList{
         position: relative;
         float: left;
