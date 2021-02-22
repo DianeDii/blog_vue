@@ -15,13 +15,19 @@ export default {
   components:{home},
   provide() {
         return {
-            reloadAll: this.reloadAll
+            reloadAll: this.reloadAll,
+            IsPC: this.IsPC
         }
     },
   data() {
       return {
-          isRouterAlive: true
+          isRouterAlive: true,
       }
+  },
+  created(){
+    // if(this.IsPC() == false){
+    //  非PC端访问可以做二级子域名，即 m.dianedii.top ，
+    // }
   },
   methods: {
       reloadAll() {
@@ -29,8 +35,22 @@ export default {
           this.$nextTick(() => {
               this.isRouterAlive = true
           })
+      },
+      IsPC() {
+          var userAgentInfo = navigator.userAgent;
+          var Agents = ["Android", "iPhone",
+                      "SymbianOS", "Windows Phone",
+                      "iPad", "iPod"];
+          var flag = true;
+          for (var v = 0; v < Agents.length; v++) {
+              if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                  flag = false;
+                 break;
+             }
+         }
+         return flag;
       }
-  }
+  },
 }
 </script>
 
