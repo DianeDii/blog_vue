@@ -8,15 +8,21 @@
         <br>
         <span v-if="articledetail != null">{{articledetail[2]}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</a></span>
       </div>
+      <div id="SOHUCS"></div> 
   </div>
+ 
 </template>
 
 <script>
+import comments from '../../utils/comments'
 export default {
     data(){
         return{
             articledetail: null,
         }
+    },
+    mounted(){
+        comments.addcomment();
     },
     created(){
         this.axios({
@@ -47,5 +53,8 @@ export default {
         top: 0;
         width: 60%;
         font-size: 15px;
+    }
+    #SOHUCS{
+        width: 80% !important;
     }
 </style>
