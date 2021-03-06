@@ -2,7 +2,9 @@
   <div id="labor">
     <div id="background"></div>
     <div :class="IsPC() ? 'content_pc':'content_mob'">
-        <h1>我的实验室，实现一些花里胡哨的想法。</h1>
+        <h1 v-if="IsPC()">我的实验室，记录一些花里胡哨的想法。</h1>
+        <h1 v-if="!IsPC()">我的实验室</h1>
+        <h2 v-if="!IsPC()">记录一些花里胡哨的想法.</h2>
         <div v-for="(item,index) in projectdata"  @click="getArticleId(item.id)">
               <span id="bogtime">{{moment(item.modifiedBy).format("YYYY-MM-DD")}}</span>
               <br>
@@ -11,8 +13,11 @@
                     <span id="blogtitle">{{item.title}}</span> 
                 </a>
               </router-link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> 
-            <span id="blogsummary">{{item.summary}}</span>
+              <div v-if="!IsPC()">
+                  <br>
+              </div>
+              >> 
+              <span :class="IsPC() ? 'blogsummary':'blogsummary_mob'">{{item.summary}}</span>
               <br><br>
               <hr :class="IsPC() ? 'hr_pc':'hr_mob'">
       </div>
@@ -37,7 +42,13 @@ export default {
     }).catch(function(err){
       console.log(err)
     })
-  }
+  },
+    beforeCreate () {
+        document.querySelector('body').setAttribute('style', 'background-color:rgb(219, 212, 202)')
+    },
+    beforeDestroy () {
+        document.querySelector('body').removeAttribute('style')
+    }
 }
 </script>
 
@@ -75,13 +86,13 @@ export default {
 <style scoped>
 /* 移动端 */
     .content_mob{
-        position: fixed;
+        position: relative;
         top: 0;
         width: 600px;
         height: 100%;
         /* margin-left: 10%; */
     }
-    .content_mob > h1{
+    .content_mob > h1,h2{
         margin-top: 30px;
         margin-left: 10%;
 
@@ -99,10 +110,10 @@ export default {
     #blogtitle{
         font-size: 20px;
     }
-    #blogsummary{
+    .blogsummary_mob{
         font-size: 15px;
     }
     .content_mob > div > span{
-        margin-left: 40px;
+        margin-left: 10px;
     }
 </style>

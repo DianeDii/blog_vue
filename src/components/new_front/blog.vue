@@ -12,8 +12,11 @@
                     <span id="blogtitle">{{item.title}}</span> 
                 </a>
               </router-link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;>> 
-              <span id="blogsummary">{{item.summary}}</span>
+              <div v-if="!IsPC()">
+                  <br>
+              </div>
+              >> 
+              <span :class="IsPC() ? 'blogsummary':'blogsummary_mob'">{{item.summary}}</span>
               <br><br>
               <hr :class="IsPC() ? 'hr_pc':'hr_mob'">
           </div>
@@ -39,6 +42,12 @@ export default {
         }).catch(function(err){
             console.log(err)
         })
+    },
+    beforeCreate () {
+        document.querySelector('body').setAttribute('style', 'background-color:rgb(219, 212, 202)')
+    },
+    beforeDestroy () {
+        document.querySelector('body').removeAttribute('style')
     }
     
 }
@@ -78,7 +87,7 @@ export default {
 <style scoped>
 /* 移动端 */
     .content_mob{
-        position: fixed;
+        position: relative;
         top: 0;
         width: 600px;
         height: 100%;
@@ -102,10 +111,10 @@ export default {
     #blogtitle{
         font-size: 20px;
     }
-    #blogsummary{
+    .blogsummary_mob{
         font-size: 15px;
     }
     .content_mob > div > span{
-        margin-left: 40px;
+        margin-left: 10px;
     }
 </style>
