@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import blog from '@/components/new_front/blog.vue'
-import life from '@/components/new_front/life.vue'
-import labor from '@/components/new_front/labor.vue'
+// import blog from '@/components/new_front/blog.vue'
+// import life from '@/components/new_front/life.vue'
+// import labor from '@/components/new_front/labor.vue'
+import list from '@/components/new_front/list.vue'
 import about from '@/components/new_front/about.vue'
 import detail from '@/components/new_front/artdetail.vue'
 import login from '@/components/frontground/login.vue'
@@ -36,18 +37,15 @@ const router = new Router({
     },
     {
       path: '/blog',
-      name: 'blog',
-      component: blog
+      component: list
     },
     {
       path: '/life',
-      name: 'life',
-      component: life
+      component: list
     },
     {
       path: '/labor',
-      name: 'labor',
-      component: labor
+      component: list
     },
     {
       path: '/about',
@@ -94,7 +92,7 @@ const router = new Router({
       component: searchlist
     },
     { 
-      path: '*', 
+      path: '/notfount', 
       name: NotFound,
       component: NotFound },
   ]

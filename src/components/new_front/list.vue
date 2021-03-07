@@ -1,11 +1,11 @@
 <template>
-  <div id="blog">
+  <div id="life">
       <div id="background"></div>
       <div :class="IsPC() ? 'content_pc':'content_mob'">
-          <h1>技术博客:</h1>
-          
-         <div v-for="(item,index) in bloglist"  @click="getArticleId(item.id)">
-              <span id="bogtime">{{moment(item.modifiedBy).format("YYYY-MM-DD")}}</span>
+          <h1>{{toptitle}}</h1>
+          <div v-for="(item,index) in list">
+              <span>{{moment(item.modifiedBy).format("YYYY-MM-DD")}}</span>
+              <span v-if="routeName == '/blog'">&emsp; &emsp; &emsp; #  {{item.ofsort}}</span>
               <br>
               <router-link :to="'/blog/'+ item.id">
                 <a href="#">
@@ -20,28 +20,67 @@
               <br><br>
               <hr :class="IsPC() ? 'hr_pc':'hr_mob'">
           </div>
-
       </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'; 
+import datalistVue from '../background/datalist.vue';
 export default {
     data(){
         return{
-            bloglist: null,
             moment,
+            routeName: this.$route.path,
+            // 将/labor /life /blog三个组件合成一个组件
+            toptitle: String,
+            bloglist: [],
+            list: [],
+
         }
     },
     inject: ['IsPC'],
     created(){
-        this.axios.get('/blog/listBlog').then(res =>{
-            this.bloglist = eval(res.data.data)
-            console.log(this.bloglist)
-        }).catch(function(err){
-            console.log(err)
-        })
+        if(this.routeName == "/life"){
+            this.toptitle ="生活随笔:",
+            this.axios.get('/blog/listbysort/1').then(res =>{
+                this.list = eval(res.data.data)
+            }).catch(function(err){
+                console.log(err)
+            })
+        }else if(this.routeName == "/blog"){
+            this.toptitle ="技术博客:",
+            this.axios.get('/blog/listBlog').then(res =>{
+                this.list = this.getArtSortName(eval(res.data.data))
+                // this.list = eval(res.data.data)
+            }).catch(function(err){
+                console.log(err)
+            })
+        }else if(this.routeName == "/labor"){
+            this.toptitle ="我的实验室:",
+            this.axios.get('/blog/listbysort/2').then(res =>{
+                this.list = eval(res.data.data)
+                }).catch(function(err){
+                console.log(err)
+                })
+        }else{
+            this.$router.push("/notfount")
+        }
+    },
+
+    methods: {
+         getArtSortName(data){
+        // 获取到文章后，再获取文章的sort信息
+                 data.forEach(element => {
+                    this.axios.get("/sort/"+element.id).then(result =>{
+                        element.ofsort = result.data.data
+                        this.$set(element,result.data.data)
+                    }).catch(function(err){
+                        console.log(err)
+                    })   
+                });
+                return data;
+            },
     },
     beforeCreate () {
         document.querySelector('body').setAttribute('style', 'background-color:rgb(219, 212, 202)')
@@ -55,7 +94,7 @@ export default {
 
 <style scoped>
     .content_pc{
-        position: fixed;
+        position: relative;
         top: 0;
         width: 900px;
         height: 100%;
@@ -107,12 +146,13 @@ export default {
         margin-left: 10%;
 
     }
-
     #blogtitle{
         font-size: 20px;
     }
     .blogsummary_mob{
         font-size: 15px;
+
+
     }
     .content_mob > div > span{
         margin-left: 10px;
