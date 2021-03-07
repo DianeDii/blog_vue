@@ -34,16 +34,16 @@ export default {
                 this.articledetail = res.data.data   
             },function(error){
                 console.log(error.res)
-                }) 
-            },
-            // 设置背景色，使用css不好
-    beforeCreate () {
+                })
+        },
+    beforeUpdate () {
         document.querySelector('body').setAttribute('style', 'background-color:rgb(219, 212, 202)')
     },
     beforeDestroy () {
         document.querySelector('body').removeAttribute('style')
     }
 }
+
 </script>
 
 <style scoped>
