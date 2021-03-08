@@ -11,7 +11,7 @@ import backindex from '@/components/background/b_index.vue'
 import datalist from '@/components/background/datalist.vue'
 import editblog from '@/components/background/edit.vue'
 import cookie from '../utils/cookie'
-import searchlist from '@/components/frontground/searchlist.vue'
+// import searchlist from '@/components/frontground/searchlist.vue'
 import NotFound from '@/components/new_front/404.vue'
 
 
@@ -87,9 +87,8 @@ const router = new Router({
       }
     },
     {
-      path: '/searchlist',
-      name: 'searchlist',
-      component: searchlist
+      path: '/search',
+      component: list
     },
     { 
       path: '/notfount', 

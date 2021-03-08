@@ -36,7 +36,7 @@ export default {
             toptitle: String,
             bloglist: [],
             list: [],
-
+            keyword: this.$route.query.val,
         }
     },
     inject: ['IsPC'],
@@ -63,10 +63,19 @@ export default {
                 }).catch(function(err){
                 console.log(err)
                 })
+        }else if(this.routeName == "/search"){
+            this.toptitle ="搜索结果:",
+            this.axios.post('/blog/search?keyword='+this.keyword).then(res =>{
+                console.log(this.keyword)
+                this.list = eval(res.data.data)
+                console.log(this.list)
+                }).catch(function(err){
+                console.log(err)
+                })
         }else{
             this.$router.push("/notfount")
         }
-    },
+    },        
 
     methods: {
          getArtSortName(data){

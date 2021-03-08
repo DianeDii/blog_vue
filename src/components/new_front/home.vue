@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div class="background"></div>
+    <div class="background" @dblclick="open()"></div>
     <div id="content">
         <div id="avatar">
             <el-avatar :size="100" shape="square" src="https://dianedii-weekly.oss-cn-beijing.aliyuncs.com/img/image-20210221194101786.png"></el-avatar>
@@ -41,7 +41,34 @@ export default {
           path:'/about',
         }) 
       }
-    }
+    },
+
+      open() {
+        this.$prompt('请输入关键字', '全局搜索', {
+          confirmButtonText: '搜索',
+          cancelButtonText: '取消',
+         
+        }).then(({ value }) => {
+          // this.$message({
+          //   type: 'success',
+          //   message: '你的邮箱是: ' + value
+          // });
+          this.$router.push({
+            path:'/search',
+            query:{
+              val: value,
+            }
+          })
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
+        });
+      }
+
+
   }
 }
 </script>
