@@ -8,7 +8,7 @@
               <span v-if="routeName == '/blog'">&emsp; &emsp; &emsp; #  {{item.ofsort}}</span>
               <br>
               <router-link :to="'/blog/'+ item.id">
-                <a href="#">
+                <a href="#"><!-- @click="checkIsSecret(item.id)" -->
                     <span id="blogtitle">{{item.title}}</span> 
                 </a>
               </router-link>
@@ -90,6 +90,27 @@ export default {
                 });
                 return data;
             },
+
+            // checkIsSecret(data){
+                // this.axios.get('/blog/isSecret?artID='+data).then(res =>{
+                //     if(res.data.data = true){
+                //         this.$prompt('该文章被加密', '请输入密码', {
+                //         confirmButtonText: '确定',
+                //         cancelButtonText: '取消',
+                        
+                //         }).then(({ value }) => {
+
+                //         }).catch(() => {
+                //         this.$message({
+                //             type: 'info',
+                //             message: '取消输入'
+                //             });       
+                //         });
+                //     }
+                // }).catch(function(err){
+                //     console.log(err)
+                // })
+            // }
     },
     beforeCreate () {
         document.querySelector('body').setAttribute('style', 'background-color:rgb(219, 212, 202)')
